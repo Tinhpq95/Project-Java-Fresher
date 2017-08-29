@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finalproject.model.ProjectInfo;
-import com.finalproject.responsitory.ProjectCompany;
+import com.finalproject.repository.ProjectCompany;
 
 @RestController
 public class ProjectInfoController {

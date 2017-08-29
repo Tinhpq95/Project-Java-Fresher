@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.finalproject.model.ProjectInfo;
-import com.finalproject.responsitory.ProjectCompany;
+import com.finalproject.repository.ProjectCompany;
 
 @Component
 public class ProjectData {
