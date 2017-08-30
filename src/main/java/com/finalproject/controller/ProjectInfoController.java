@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finalproject.model.ProjectInfo;
+import com.finalproject.model.ProjectName;
 import com.finalproject.responsitory.ProjectCompany;
 import com.finalproject.service.ProjectServiceImp;
 
@@ -33,7 +34,7 @@ public class ProjectInfoController {
 	@RequestMapping(value = "/project/getAllProjectName")
 	public ResponseEntity<?> getAllProjectName(){
 		
-		List<String> projectNames;
+		List<ProjectName> projectNames;
 		
 		projectNames = projectService.getProjectName();
 		

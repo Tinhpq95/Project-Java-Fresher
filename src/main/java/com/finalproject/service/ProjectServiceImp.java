@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.finalproject.model.ProjectInfo;
+import com.finalproject.model.ProjectName;
 import com.finalproject.responsitory.ProjectCompany;
 
 @Service("ProjectService")
@@ -40,13 +41,13 @@ public class ProjectServiceImp implements ProjectService {
 	}
 
 	@Override
-	public List<String> getProjectName() {
+	public List<ProjectName> getProjectName() {
 		// TODO Auto-generated method stub
-		List<String> projectNames = new ArrayList<>();
+		List<ProjectName> projectNames = new ArrayList<>();
 		List<ProjectInfo> projectInfos = getAll();
 
 		for (ProjectInfo projectInfo : projectInfos) {
-			projectNames.add(projectInfo.getProjectName());
+			projectNames.add(new ProjectName(projectInfo.getProjectName()));
 		}
 		return projectNames;
 	}
