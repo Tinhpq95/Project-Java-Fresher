@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.finalproject.model.ProjectInfo;
 import com.finalproject.model.ProjectName;
-import com.finalproject.responsitory.ProjectCompany;
+import com.finalproject.repository.ProjectCompany;
 import com.finalproject.service.ProjectServiceImp;
 
 @RestController

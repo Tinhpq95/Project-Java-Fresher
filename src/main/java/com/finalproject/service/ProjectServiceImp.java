@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.finalproject.model.ProjectInfo;
 import com.finalproject.model.ProjectName;
-import com.finalproject.responsitory.ProjectCompany;
+import com.finalproject.repository.ProjectCompany;
 
 @Service("ProjectService")
 public class ProjectServiceImp implements ProjectService {

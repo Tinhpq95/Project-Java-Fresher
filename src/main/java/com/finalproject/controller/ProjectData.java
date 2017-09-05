@@ -17,7 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.finalproject.model.ProjectInfo;
-import com.finalproject.responsitory.ProjectCompany;
+import com.finalproject.repository.ProjectCompany;
 
 @Component
 public class ProjectData {
@@ -25,6 +25,7 @@ public class ProjectData {
 											// begin count to now
 
 	private static final long time4weeks = Long.parseLong("2419200000");
+	//2419200000
 
 //	private List<String> getProjectName() {
 //
@@ -51,7 +52,7 @@ public class ProjectData {
 
 	public List<String> getProjectNameCurrent4Week() {
 		List<String> projectName = new ArrayList<>();
-		String url = "http://localhost/RecentChanges";
+		String url = "http://20.203.139.12:8083/RecentChanges";
 
 		try {
 			Document doc = Jsoup.connect(url).get();
@@ -93,7 +94,7 @@ public class ProjectData {
 		List<ProjectInfo> listProjectInfo = new ArrayList<>();
 		List<String> projectName = getProjectNameCurrent4Week();
 	//	List<String> projectTestSuitName = new ArrayList<>();
-		String url = "http://localhost/FrontPage.";
+		String url = "http://20.203.139.12:8083/FrontPage.";
 
 		for (int i = 0; i < projectName.size(); i++) {
 			List<String> projectTestSuitName = new ArrayList<>();
