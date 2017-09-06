@@ -1,7 +1,10 @@
 package com.finalproject.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -17,28 +20,70 @@ import com.finalproject.repository.ProjectCompany;
 
 @Component
 public class ProjectData {
-	private int numberProjectTestSuite = 0; // Number of project test suit from
+	//private int numberProjectTestSuite = 0; // Number of project test suit from
 											// begin count to now
 
-	private List<String> getProjectName() {
+	private static final long time4weeks = Long.parseLong("2419200000");
+	//2419200000
 
+//	private List<String> getProjectName() {
+//
+//		List<String> projectName = new ArrayList<>();
+//		// List<String> urls = new ArrayList<>();
+//
+//		String url = "http://125.212.218.144/FrontPage";
+//
+//		try {
+//			Document doc = Jsoup.connect(url).get();
+//			Elements tableElements = doc.select("table");
+//			for (int i = 0; i < tableElements.size(); i++) {
+//				projectName.add(tableElements.get(i).select("td").get(1).text().substring(1));
+//				// System.out.println(tableElements.get(i).select("td").get(1).text().substring(1));
+//			}
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//
+//		}
+//		return projectName;
+//	}
+
+	public List<String> getProjectNameCurrent4Week() {
 		List<String> projectName = new ArrayList<>();
-		List<String> urls = new ArrayList<>();
-
-		String url = "http://localhost/FrontPage";
+		String url = "http://20.203.139.12:8083/RecentChanges";
 
 		try {
 			Document doc = Jsoup.connect(url).get();
 			Elements tableElements = doc.select("table");
-			for (int i = 0; i < tableElements.size(); i++) {
-				projectName.add(tableElements.get(i).select("td").get(1).text().substring(1));
-				// System.out.println(tableElements.get(i).select("td").get(1).text().substring(1));
+			Elements tableRowElements = tableElements.select(":not(thead) tr");
+			for (int i = 0; i < tableRowElements.size(); i++) {
+
+				String date1 = tableRowElements.get(i).select("td").get(2).text();
+				Date date = new SimpleDateFormat("HH:mm:ss EEE, MMM dd, yyyy").parse(date1);
+				long timeLastChange = date.getTime();
+				long timeNow = System.currentTimeMillis();
+
+				if (timeNow - timeLastChange < time4weeks) {
+					String currentName = tableRowElements.get(i).select("td").get(0).text(); // Get String Name Project on Fitnesse 
+					if (!"".equals(currentName) && currentName.contains(".")) {
+						String updateName = currentName.split("\\.")[1]; // Project Name after split currentName
+						if (!projectName.contains(updateName)) {
+							projectName.add(updateName);
+					//		System.out.println("Name After Date:-----" + updateName);
+						}
+					}
+				}
+
 			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return projectName;
 	}
@@ -46,11 +91,12 @@ public class ProjectData {
 	public List<ProjectInfo> getProjectInfo() {
 
 		List<ProjectInfo> listProjectInfo = new ArrayList<>();
-		List<String> projectName = getProjectName();
-		List<String> projectTestSuitName = new ArrayList<>();
-		String url = "http://localhost/FrontPage.";
+		List<String> projectName = getProjectNameCurrent4Week();
+	//	List<String> projectTestSuitName = new ArrayList<>();
+		String url = "http://20.203.139.12:8083/FrontPage.";
 
 		for (int i = 0; i < projectName.size(); i++) {
+			List<String> projectTestSuitName = new ArrayList<>();
 			int countDesigned = 0, countReady = 0, countManual = 0, countAutomated = 0;
 			try {
 				Document doc = Jsoup.connect(url + projectName.get(i)).get();
@@ -60,14 +106,14 @@ public class ProjectData {
 				for (int j = 1; j < tableRowElements.size(); j++) {
 					projectTestSuitName.add(url + projectName.get(i) + "."
 							+ tableRowElements.get(j).select("td").get(0).text().substring(1));
-					
+
 				}
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			for (int k = numberProjectTestSuite; k < projectTestSuitName.size(); k++) {
+			for (int k = 0; k < projectTestSuitName.size(); k++) { //numberProjectTestSuite
 
 				try {
 					// System.out.println(projectTestSuitName.get(k));
@@ -107,23 +153,23 @@ public class ProjectData {
 			}
 			listProjectInfo
 					.add(new ProjectInfo(projectName.get(i), countDesigned, countReady, countManual, countAutomated));
-			numberProjectTestSuite = numberProjectTestSuite + projectTestSuitName.size();
+			//numberProjectTestSuite = numberProjectTestSuite + projectTestSuitName.size();
 		}
 
 		return listProjectInfo;
 	}
-	
+
 	@Autowired
 	ProjectCompany projectCompany;
-	
-	@Scheduled(fixedRate = 600000)
+
+	@Scheduled(fixedRate = 60000) // cronjob 1 minute
 	public void reportCurrentTime() {
 		ProjectData listData = new ProjectData();
 		List<ProjectInfo> listProjectInfo = listData.getProjectInfo();
 		for (int i = 0; i < listProjectInfo.size(); i++) {
 			projectCompany.save(listProjectInfo.get(i));
 			listProjectInfo.get(i).toStringKQ();
-			System.out.println("AUTOOOOO");
+		//	System.out.println("CRONJOB----");
 		}
 	}
 }

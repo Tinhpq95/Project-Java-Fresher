@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.finalproject.MainApp.MainAppApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.73 sec - in com.finalproject.MainApp.MainAppApplicationTests
