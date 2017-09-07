@@ -86,7 +86,7 @@ public class LoginController {
 		modelAndView.addObject("userName",
 				"Welcome " + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		modelAndView.addObject("userMessage", "Bạn có thể vào xem data và chart của chúng tôi!");
-		modelAndView.setViewName("admin/home");
+		modelAndView.setViewName("user/home");
 		return modelAndView;
 	}
 }

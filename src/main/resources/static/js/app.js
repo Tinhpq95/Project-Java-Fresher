@@ -14,11 +14,15 @@ app.service('sharedProperties', function() {
 	};
 });
 
+app.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}]);
+
 app.controller('MainCtrl',
 		function($rootScope, $scope, $http, sharedProperties) {
 			$scope.records = {};
 			$scope.nameProject = 'SuitProject001';
-			$http.get('http://localhost:7000/project/getAllProjectName').then(
+			$http.get('http://20.203.139.27:7000/project/getAllProjectName').then(
 					function(data) {
 						$scope.records = data.data;
 					})
@@ -71,7 +75,7 @@ app.controller('PieChart',
 				$http(
 						{
 							method : "GET",
-							url : "http://localhost:7000/project/"
+							url : "http://20.203.139.27:7000/project/"
 									+ sharedProperties.getProjectName()
 						}).then(
 						function mySuccess(response) {
@@ -129,7 +133,7 @@ app.controller('columnchart', function($rootScope, $scope, $http,
 		$http(
 				{
 					method : "GET",
-					url : "http://localhost:7000/project/"
+					url : "http://20.203.139.27:7000/project/"
 							+ sharedProperties.getProjectName()
 				}).then(
 				function mySuccess(response) {
