@@ -21,13 +21,13 @@
 <body ng-controller = "MainCtrl">
 	<table>
 		<tr ng-repeat= "item in records">
-			<td> {{item.name}}</td>
+			<td ><a href="" ng-click="setCurrentProject(item.name)">{{item.name}}</a></td>
 		</tr>
 		<tr>
 			<td><div ng-controller="columnchart" id="columnchart_values"
-					style="width: 900px; height: 300px;"></div></td>
+					style="width: 600px; height: 300px;"></div></td>
 			<td><div ng-controller="PieChart" id="piechart_3d"
-					style="border: 1px solid #ccc; width: 620px; height: 500px;"></div></td>
+					style="border: 1px solid #ccc; width: 600px; height: 300px;"></div></td>
 
 		</tr>
 

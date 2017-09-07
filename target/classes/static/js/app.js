@@ -1,19 +1,43 @@
 var app = angular.module('mainApp', []);
 
-app.controller('MainCtrl', function($scope, $http) {
-	$scope.records = {};
-	$http.get('http://localhost:7000/project/getAllProjectName').then(function(data) {
-		$scope.records = data.data;
-	})
+app.service('sharedProperties', function() {
+	var projectname = 'SuitProject001';
+
+	return {
+		getProjectName : function() {
+			return projectname;
+		},
+		setProjectName : function(name) {
+			projectname = name;
+			
+		}
+	};
 });
 
-google.charts.load('current', {
-	'packages' : [ 'corechart' ]
+app.controller('MainCtrl', function($scope, $http, sharedProperties) {
+	$scope.records = {};
+	$http.get('http://localhost:7000/project/getAllProjectName').then(
+			function(data) {
+				$scope.records = data.data;
+			})
+
+	$scope.setCurrentProject = function(name) {
+
+		sharedProperties.setProjectName(name);
+		console.log(name);
+
+	}
 });
-app.controller('PieChart', function($scope, $http) {
+
+app.controller('PieChart', function($scope, $http, sharedProperties) {
+
+	google.charts.load('current', {
+		'packages' : [ 'corechart' ]
+	});
 
 	// Function draw pie chart
 	google.charts.setOnLoadCallback(drawPieChart);
+
 	function drawPieChart() {
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', 'Status');
@@ -33,10 +57,12 @@ app.controller('PieChart', function($scope, $http) {
 	// Get content from JSON url
 	$scope.Excution = [];
 	$scope.Get = function() {
-		$http({
-			method : "GET",
-			url : "http://localhost:7000/project/SuitProject001"
-		}).then(
+		$http(
+				{
+					method : "GET",
+					url : "http://localhost:7000/project/"
+							+ sharedProperties.getProjectName()
+				}).then(
 				function mySuccess(response) {
 
 					$scope.Excution = [ [ "designed", response.data.designed ],
@@ -48,7 +74,11 @@ app.controller('PieChart', function($scope, $http) {
 	$scope.Get();
 });
 
-app.controller('columnchart', function($scope, $http) {
+app.controller('columnchart', function($scope, $http, sharedProperties) {
+
+	google.charts.load('current', {
+		'packages' : [ 'corechart' ]
+	});
 
 	// Function draw pie chart
 	google.charts.setOnLoadCallback(drawColumnchart);
@@ -78,10 +108,12 @@ app.controller('columnchart', function($scope, $http) {
 	// Get content from JSON url
 	$scope.Excution = [];
 	$scope.Get = function() {
-		$http({
-			method : "GET",
-			url : "http://localhost:7000/project/SuitProject001"
-		}).then(
+		$http(
+				{
+					method : "GET",
+					url : "http://localhost:7000/project/"
+							+ sharedProperties.getProjectName()
+				}).then(
 				function mySuccess(response) {
 
 					$scope.Excution = [ [ "auto", response.data.automated ],
