@@ -4,6 +4,45 @@
 <head>
 <meta charset="utf-8" />
 <title>AngularJS Plunker</title>
+
+<style>
+div#project {
+	margin: 50px;
+}
+
+h1 {
+	color: #6200EA;
+	text-decoration: none;
+	text-align: center;
+	design: block;
+}
+
+h3 {
+	margin: 0px 0px 0px 80px;
+	text-decoration: none;
+}
+
+h4 {
+	background-color: #FFFFFF;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #2962FF;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a {
+	color: #FFFFFF;
+	text-decoration: none;
+	background-color: #81D4FA;
+	padding: 10px;
+	border-radius: 12px;
+	border: 1px solid white;
+	text-decoration: none;
+}
+</style>
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script type="text/javascript"
@@ -18,24 +57,33 @@
 
 </head>
 
-<body ng-controller = "MainCtrl">
+<body ng-controller="MainCtrl">
+
+	<h1>{{nameProject}}</h1>
+
 	<table>
-		<tr ng-repeat= "item in records">
-			<td ><a href="" ng-click="setCurrentProject(item.name)">{{item.name}}</a></td>
-		</tr>
 		<tr>
+			<td>
+				<div></div>
+				<h3>Browser Projects</h3>
+				</div>
+				<div id="project">
+					<ul ng-repeat="item in records">
+						<h4>
+							<a href="" ng-click="setCurrentProject(item.name)">{{item.name}}</a>
+						</h4>
+					</ul>
+				</div>
+			</td>
 			<td><div ng-controller="columnchart" id="columnchart_values"
-					style="width: 600px; height: 300px;"></div></td>
-			<td><div ng-controller="PieChart" id="piechart_3d"
-					style="border: 1px solid #ccc; width: 600px; height: 300px;"></div></td>
-
-		</tr>
-
-		<tr>
+					style="width: 500px; height: 300px;"></div></td>
+			<td>
+				<div ng-controller="PieChart" id="piechart_3d"
+					style="width: 550px; height: 350px;"></div>
+			</td>
 
 		</tr>
 	</table>
-
 
 </body>
 
